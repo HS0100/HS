@@ -1,0 +1,56 @@
+import 'package:flutter/material.dart';
+import 'dart:async';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: CurrentTimeScreen(),
+    );
+  }
+}
+
+class CurrentTimeScreen extends StatefulWidget {
+  @override
+  _CurrentTimeScreenState createState() => _CurrentTimeScreenState();
+}
+
+class _CurrentTimeScreenState extends State<CurrentTimeScreen> {
+  late String _currentTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateTime();
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      _updateTime();
+    });
+  }
+
+  void _updateTime() {
+    setState(() {
+      final now = DateTime.now();
+      _currentTime = "${now.year}-${now.month}-${now.day}\n${now.hour}:${now.minute}:${now.second}";
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("현재 시각"),
+      ),
+      body: Center(
+        child: Text(
+          _currentTime,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    );
+  }
+}
