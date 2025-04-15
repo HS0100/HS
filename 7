@@ -1,0 +1,99 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+
+class Page1 extends StatelessWidget {
+  final List<String> _images = [
+    'https://cdn.pixabay.com/photo/2018/11/12/18/44/thanksgiving-3811492_1280.jpg',
+    'https://cdn.pixabay.com/photo/2019/10/30/15/33/tajikistan-4589831_1280.jpg',
+    'https://cdn.pixabay.com/photo/2019/11/25/16/15/sfari-4652364_1280.jpg',
+  ];
+
+  Widget _buildTopMenu() {
+    final List<Map<String, IconData>> menus = [
+      {'식사': Icons.fastfood},
+      {'커피': Icons.local_cafe},
+      {'편의점': Icons.store},
+      {'마트': Icons.local_grocery_store},
+      {'약국': Icons.local_hospital},
+      {'택시': Icons.local_taxi},
+      {'기타': Icons.more_horiz},
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        spacing: 30,
+        runSpacing: 20,
+        children: menus.map((menu) {
+          String title = menu.keys.first;
+          IconData icon = menu.values.first;
+          return GestureDetector(
+            onTap: () {
+              // 클릭 이벤트
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(icon, size: 30, color: Colors.blueAccent),
+                SizedBox(height: 5),
+                Text(title),
+              ],
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildSlider() {
+    return CarouselSlider(
+      options: CarouselOptions(
+        height: 180,
+        autoPlay: true,
+        enlargeCenterPage: true,
+      ),
+      items: _images.map((url) {
+        return Builder(
+          builder: (BuildContext context) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              margin: EdgeInsets.symmetric(horizontal: 8.0),
+              decoration: BoxDecoration(color: Colors.amber),
+              child: Image.network(url, fit: BoxFit.cover),
+            );
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildNotice() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Container(
+        color: Colors.grey[200],
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: [
+            Icon(Icons.announcement, color: Colors.orange),
+            SizedBox(width: 8),
+            Expanded(child: Text("공지사항: 새로운 기능이 추가되었습니다.")),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        _buildTopMenu(),
+        _buildSlider(),
+        _buildNotice(),
+      ],
+    );
+  }
+}
